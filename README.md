@@ -49,5 +49,36 @@ This project is a modern multi-tenant SaaS boilerplate built with Laravel, Stanc
 - Update roles, permissions, and plans in the seeders as needed.
 - UI is built with Tailwind CSS and can be easily customized.
 
+# Subdomain Configuration
+
+To use tenant subdomains in your local development environment, you need to map each tenant's subdomain to `127.0.0.1` in your hosts file.
+
+### For Windows (Laragon)
+1. Open Notepad as Administrator.
+2. Open the file: `C:\Windows\System32\drivers\etc\hosts`
+3. Add a line for each tenant subdomain you want to use. For example:
+   ```
+   127.0.0.1   tenant1.tenant.test
+   127.0.0.1   tenant2.tenant.test
+   ```
+   Replace `tenant1` and `tenant2` with your actual tenant IDs.
+4. Save the file.
+
+### For Linux / macOS
+1. Open a terminal.
+2. Edit the `/etc/hosts` file with sudo:
+   ```bash
+   sudo nano /etc/hosts
+   ```
+3. Add a line for each tenant subdomain you want to use. For example:
+   ```
+   127.0.0.1   tenant1.tenant.test
+   127.0.0.1   tenant2.tenant.test
+   ```
+   Replace `tenant1` and `tenant2` with your actual tenant IDs.
+4. Save and close the file (in nano, press `Ctrl+O` to save, then `Ctrl+X` to exit).
+
+Now you can access your tenants at `http://tenant1.tenant.test` and `http://tenant2.tenant.test` in your browser.
+
 ## License
 MIT
