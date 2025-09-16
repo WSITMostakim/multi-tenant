@@ -24,7 +24,7 @@
         @yield('content')
     </main>
     <footer class="bg-blue-700 text-white text-center p-4 mt-auto">
-        &copy; {{ date('Y') }} System Panel
+        &copy; {{ date('Y') }} {{ config('app.name') }}
     </footer>
 </body>
 </html>

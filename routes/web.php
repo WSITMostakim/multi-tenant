@@ -9,18 +9,18 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 foreach (config('tenancy.central_domains') as $domain) {
     Route::domain($domain)->group(function () {
-    Route::get('login', [App\Http\Controllers\System\AuthController::class, 'index'])->middleware('guest')->name('login');
-    Route::post('login', [App\Http\Controllers\System\AuthController::class, 'login'])->middleware('guest')->name('login.post');
-    Route::get('logout', [App\Http\Controllers\System\AuthController::class, 'logout'])->middleware('auth')->name('logout');
+        Route::get('login', [App\Http\Controllers\System\AuthController::class, 'index'])->middleware('guest')->name('login');
+        Route::post('login', [App\Http\Controllers\System\AuthController::class, 'login'])->middleware('guest')->name('login.post');
+        Route::get('logout', [App\Http\Controllers\System\AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-    Route::middleware('auth')->group(function () {
-        Route::get('/', function () {
-            return view('ui.system.dashboard.index');
+        Route::middleware('auth')->group(function () {
+            Route::get('/', function () {
+                return view('ui.system.dashboard.index');
+            });
+            Route::resource('plans', App\Http\Controllers\System\PlanController::class);
+            Route::resource('tenants', App\Http\Controllers\System\TenantController::class);
+            Route::resource('users', App\Http\Controllers\System\UserController::class);
         });
-        Route::resource('plans', App\Http\Controllers\System\PlanController::class);
-        Route::resource('tenants', App\Http\Controllers\System\TenantController::class);
-        Route::resource('users', App\Http\Controllers\System\UserController::class);
-    });
     });
 }
 /*
@@ -39,7 +39,13 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::get('/', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+    Route::get('login', [App\Http\Controllers\System\AuthController::class, 'index'])->middleware('guest')->name('login');
+    Route::post('login', [App\Http\Controllers\System\AuthController::class, 'login'])->middleware('guest')->name('login.post');
+    Route::get('logout', [App\Http\Controllers\System\AuthController::class, 'logout'])->middleware('auth')->name('logout');
+    Route::middleware('auth')->group(function () {
+        Route::get('/', function () {
+             return view('ui.tenant.dashboard.index');
+        });
+        Route::resource('users', App\Http\Controllers\Tenant\UserController::class);
     });
 });

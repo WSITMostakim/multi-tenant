@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Stancl\Tenancy\Facades\Tenancy;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class TenantController extends Controller
 {
@@ -49,6 +52,26 @@ class TenantController extends Controller
             ]);
             $tenant->domains()->create(['domain' => $data['domain']]);
             $tenant->plans()->sync([$data['plan_id']]);
+
+            // Initialize tenancy for the new tenant
+            Tenancy::initialize($tenant);
+
+            // Create the admin user for the tenant
+            $user = \App\Models\User::create([
+                'name' => 'Tenant Admin',
+                'email' => 'admin@' . $request->id . '.com',
+                'password' => Hash::make('password'),
+            ]);
+
+            // Create or get the 'admin' role for tenant
+            $role = Role::firstOrCreate([
+                'name' => 'admin',
+                'guard_name' => 'web',
+            ]);
+            $user->assignRole($role);
+
+            Tenancy::end();
+
             return redirect()->route('tenants.index')->with('success', 'Tenant created successfully.');
         } catch (\Throwable $e) {
             return back()->withInput()->with('error', 'Failed to create tenant: ' . $e->getMessage());
