@@ -49,7 +49,7 @@ This project is a modern multi-tenant SaaS boilerplate built with Laravel, Stanc
 - Update roles, permissions, and plans in the seeders as needed.
 - UI is built with Tailwind CSS and can be easily customized.
 
-# Subdomain Configuration
+## Subdomain Configuration
 
 To use tenant subdomains in your local development environment, you need to map each tenant's subdomain to `127.0.0.1` in your hosts file.
 
