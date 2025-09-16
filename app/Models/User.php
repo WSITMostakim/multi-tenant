@@ -11,12 +11,6 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /**
-     * The guard name for Spatie roles/permissions.
-     *
-     * @var string
-     */
-    protected $guard_name = 'system';
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
 

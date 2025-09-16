@@ -3,63 +3,72 @@
 namespace App\Http\Controllers\System;
 
 use App\Http\Controllers\Controller;
+use App\Models\Plan;
 use Illuminate\Http\Request;
 
 class PlanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $plans = Plan::all();
+        return view('ui.system.plan.index', compact('plans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('ui.system.plan.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        try {
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'price' => 'required|numeric|min:0',
+                'interval' => 'required|string',
+                'description' => 'nullable|string',
+                'features' => 'nullable|array',
+                'is_active' => 'boolean',
+            ]);
+            $data['features'] = $data['features'] ?? [];
+            Plan::create($data);
+            return redirect()->route('plans.index')->with('success', 'Plan created successfully.');
+        } catch (\Throwable $e) {
+            return back()->withInput()->with('error', 'Failed to create plan: ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Plan $plan)
     {
-        //
+        return view('ui.system.plan.edit', compact('plan'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Plan $plan)
     {
-        //
+        try {
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'price' => 'required|numeric|min:0',
+                'interval' => 'required|string',
+                'description' => 'nullable|string',
+                'features' => 'nullable|array',
+                'is_active' => 'boolean',
+            ]);
+            $data['features'] = $data['features'] ?? [];
+            $plan->update($data);
+            return redirect()->route('plans.index')->with('success', 'Plan updated successfully.');
+        } catch (\Throwable $e) {
+            return back()->withInput()->with('error', 'Failed to update plan: ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Plan $plan)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            $plan->delete();
+            return redirect()->route('plans.index')->with('success', 'Plan deleted successfully.');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to delete plan: ' . $e->getMessage());
+        }
     }
 }

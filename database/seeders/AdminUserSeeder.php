@@ -19,7 +19,7 @@ class AdminUserSeeder extends Seeder
 
         // Assign the 'admin' role with guard 'system'
         $user->assignRole(
-            \Spatie\Permission\Models\Role::where('name', 'admin')->where('guard_name', 'system')->first()
+            \Spatie\Permission\Models\Role::where('name', 'admin')->first()
         );
     }
 }

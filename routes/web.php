@@ -13,6 +13,8 @@ foreach (config('tenancy.central_domains') as $domain) {
             return view('ui.system.dashboard.index');
         });
         Route::resource('plans', App\Http\Controllers\System\PlanController::class);
+        Route::resource('tenants', App\Http\Controllers\System\TenantController::class);
+        Route::resource('users', App\Http\Controllers\System\UserController::class);
     });
 }
 /*

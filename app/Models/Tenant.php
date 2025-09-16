@@ -15,4 +15,12 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     {
         return $this->belongsToMany(Plan::class, 'plan_tenant', 'tenant_id', 'plan_id');
     }
+
+    /**
+     * Get the current plan for the tenant (assumes only one plan per tenant).
+     */
+    public function plan()
+    {
+        return $this->plans()->first();
+    }
 }

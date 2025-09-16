@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('plan_tenant', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('tenant_id');
+            $table->string('tenant_id'); // Stancl tenancy uses string/uuid for tenant id
             $table->unsignedBigInteger('plan_id');
-            $table->timestamps();
-            $table->unique(['tenant_id', 'plan_id']);
+            $table->primary(['tenant_id', 'plan_id']);
         });
     }
 
