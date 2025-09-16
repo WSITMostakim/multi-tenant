@@ -14,10 +14,12 @@
             ['url' => route('plans.index'), 'label' => 'Plans'],
             ['url' => route('tenants.index'), 'label' => 'Tenants'],
             ['url' => route('users.index'), 'label' => 'Users'],
-            ['url' => '#', 'label' => 'Settings'],
+            ['url' => route('logout'), 'label' => 'Logout'],
         ];
     @endphp
-    <x-header :title="'System Panel'" :links="$links" :bg="'#f8fafc'" :color="'#2563eb'" />
+    @if(Auth::check())
+        <x-header :title="'System Panel'" :links="$links" :bg="'#f8fafc'" :color="'#2563eb'" />
+    @endif
     <main class="flex-1 container mx-auto p-6">
         @yield('content')
     </main>

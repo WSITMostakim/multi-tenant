@@ -9,6 +9,12 @@
                 Back
             </a>
         </div>
+        @if(session('error'))
+            <div class="mb-4 p-3 bg-red-100 text-red-800 rounded shadow flex items-center justify-between">
+                <span>{{ session('error') }}</span>
+                <button type="button" onclick="this.parentElement.style.display='none'" class="ml-4 text-red-700 hover:text-red-900 text-xl font-bold leading-none">&times;</button>
+            </div>
+        @endif
         <form action="{{ route('plans.store') }}" method="POST" class="space-y-5">
             @csrf
             <div>

@@ -9,12 +9,18 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 foreach (config('tenancy.central_domains') as $domain) {
     Route::domain($domain)->group(function () {
+    Route::get('login', [App\Http\Controllers\System\AuthController::class, 'index'])->middleware('guest')->name('login');
+    Route::post('login', [App\Http\Controllers\System\AuthController::class, 'login'])->middleware('guest')->name('login.post');
+    Route::get('logout', [App\Http\Controllers\System\AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+    Route::middleware('auth')->group(function () {
         Route::get('/', function () {
             return view('ui.system.dashboard.index');
         });
         Route::resource('plans', App\Http\Controllers\System\PlanController::class);
         Route::resource('tenants', App\Http\Controllers\System\TenantController::class);
         Route::resource('users', App\Http\Controllers\System\UserController::class);
+    });
     });
 }
 /*
